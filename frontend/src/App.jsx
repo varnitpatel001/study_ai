@@ -31,7 +31,7 @@ export default function App() {
   const fetchSubtopics = async () => {
     if (!topic.trim()) return alert("Please enter a topic");
     try {
-      const res = await fetch("http://127.0.0.1:8000/get_subtopics", {
+      const res = await fetch("https://study-ai-0akh.onrender.com/get_subtopics", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ topic }),
@@ -81,7 +81,7 @@ Return ONLY valid JSON as:
 Make questions suitable for ${difficulty} difficulty.`;
 
       const [expRes, quizRes] = await Promise.all([
-        fetch("http://127.0.0.1:8000/generate_explanation", {
+        fetch("https://study-ai-0akh.onrender.com/generate_explanation", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ prompt: explanationPrompt }),
@@ -193,7 +193,7 @@ Make questions suitable for ${difficulty} difficulty.`;
     };
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/export_session_pdf", {
+      const res = await fetch("https://study-ai-0akh.onrender.com/export_session_pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ session }),
