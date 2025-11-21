@@ -258,7 +258,7 @@ Make questions suitable for ${difficulty} difficulty.`;
               ))}
             </div>
             <button className="btn btn-outline-secondary btn-sm" onClick={exportPDF}>
-              📄 Export PDF
+              Export PDF
             </button>
           </div>
         </div>
