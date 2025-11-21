@@ -86,7 +86,7 @@ Make questions suitable for ${difficulty} difficulty.`;
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ prompt: explanationPrompt }),
         }),
-        fetch("http://127.0.0.1:8000/generate_quiz", {
+        fetch("https://study-ai-0akh.onrender.com/generate_quiz", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ prompt: quizPrompt }),
