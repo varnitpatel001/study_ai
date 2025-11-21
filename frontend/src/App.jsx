@@ -212,7 +212,7 @@ Make questions suitable for ${difficulty} difficulty.`;
   str?.toString().trim().toLowerCase().replace(/[’']/g, "'").replace(/\s+/g, " ");
 
   return (
-    <div className="bg-light min-vh-100 d-flex flex-column">
+    <div className="bg-light min-vh-100 min-vw-100 d-flex flex-column">
           <style>
         {`
           .list-group-item-success {
