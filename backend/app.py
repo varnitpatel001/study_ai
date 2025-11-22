@@ -312,8 +312,11 @@ def generate_quiz(req: PromptRequest):
         "Each question must be an object with keys: \"question\" (string), \"options\" (array of 4 strings), "
         "\"answer\" (the correct option string exactly matching one of the options), and "
         "\"explanation\" (1-2 sentences explaining the correct answer).\n\n"
-        "Return strictly in  ONLY a valid JSON array of 15 objects (no extra text, no markdown). Example:\n"
-        "[{\"question\":\"...\",\"options\":[\"A\",\"B\",\"C\",\"D\"],\"answer\":\"A\",\"explanation\":\"...\"}, ...]"
+        "Return strictly in ONLY a valid JSON array of 15 objects (no extra text, no markdown). Example:\n"
+       [
+  {"question":"...","options":["A","B","C","D"],"answer":"A","explanation":"..."},
+  ...
+]
     )
     system_msg = "You are an expert quiz generator. Output strictly valid JSON array of objects."
     result = call_groq(prompt, system_msg=system_msg, max_tokens=2000, temperature=0.0)
