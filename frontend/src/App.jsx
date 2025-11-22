@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 
@@ -7,7 +7,7 @@ export default function App() {
   const [topic, setTopic] = useState("");
   const [subtopics, setSubtopics] = useState([]);
   const [subtopic, setSubtopic] = useState("None");
-  const [difficulty, setDifficulty] = useState("Medium");
+  const [difficulty, setDifficulty] = useState("Easy");
   const [explanation, setExplanation] = useState("");
   const [quiz, setQuiz] = useState([]);
   const [answers, setAnswers] = useState({});
@@ -15,9 +15,12 @@ export default function App() {
   const [scoreRaw, setScoreRaw] = useState(0);
   const [scoreWeighted, setScoreWeighted] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [language, setLanguage] = useState("English");
+    const [googleLoaded, setGoogleLoaded] = useState(false);
+
 
   const QUESTION_COUNT = 15;
-  const DIFFICULTY_WEIGHT = { Easy: 1, Medium: 2, Hard: 3 };
+  const DIFFICULTY_WEIGHT = { Easy: 1 };
 
     const fetchSubtopics = async () => {
     if (!topic.trim()) return alert("Please enter a topic");
@@ -58,16 +61,8 @@ export default function App() {
       const explanationPrompt = `Explain "${seedPrompt}" thoroughly. Provide a clear, structured explanation with examples, intuition, and practical notes. Make the explanation detailed (aim for 300+ words). Use simple language and subheadings where appropriate.`;
 
       const quizPrompt = `Create ${QUESTION_COUNT} multiple-choice questions about "${seedPrompt}". 
-Each question must include:
-- "question": the question text
-- "options": a list of 4 answer choices (A–D)
-- "answer": the correct answer text (exactly one from options)
-- "explanation": a short explanation (1–3 sentences) for why the answer is correct.
-Return ONLY valid JSON as:
-[
-  {"question":"...","options":["A","B","C","D"],"answer":"A","explanation":"..."},
-  ...
-]
+
+
 Make questions suitable for ${difficulty} difficulty.`;
 
       const [expRes, quizRes] = await Promise.all([
@@ -173,7 +168,6 @@ Make questions suitable for ${difficulty} difficulty.`;
     const session = {
       topic,
       subtopic,
-      difficulty,
       explanation,
       quiz,
       answers,
@@ -211,7 +205,100 @@ Make questions suitable for ${difficulty} difficulty.`;
   const normalize = str =>
   str?.toString().trim().toLowerCase().replace(/[’']/g, "'").replace(/\s+/g, " ");
 
+
+  const changeLanguage = (label, code) => {
+  setLanguage(label);
+
+  const select = document.querySelector(".goog-te-combo");
+
+  if (!select) {
+    console.warn("Google Translate not loaded yet");
+    return;
+  }
+
+  select.value = code;
+  select.dispatchEvent(new Event("change"));
+};
+
+
+// Callback required by Google script
+window.googleTranslateElementInit = function () {
+  console.log("Google Translator Callback Fired");
+  setGoogleLoaded(true);
+};
+
+useEffect(() => {
+  if (document.getElementById("google-translate-script")) return;
+
+  const script = document.createElement("script");
+  script.id = "google-translate-script";
+  script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+  script.async = true;
+  document.body.appendChild(script);
+}, []);
+
+useEffect(() => {
+  if (!googleLoaded || !window.google) return;
+
+  new window.google.translate.TranslateElement(
+    {
+      pageLanguage: "en",
+      includedLanguages: "en,hi",
+      autoDisplay: false,
+    },
+    "google_translate_container"
+  );
+
+  // Hide the banner iframe
+  const removeBanner = setInterval(() => {
+    const iframe = document.querySelector("iframe.goog-te-banner-frame");
+    if (iframe) {
+      iframe.style.display = "none";
+      document.body.style.top = "0px";
+      clearInterval(removeBanner);
+    }
+  }, 500);
+
+  // Hide the surrounding wrapper container
+  const removeWrapper = setInterval(() => {
+    const wrapper = document.querySelector(".goog-te-banner-frame");
+    const parentWrapper = wrapper?.parentNode;
+    
+    if (wrapper) wrapper.style.display = "none";
+    if (parentWrapper) parentWrapper.style.display = "none";
+
+    document.body.style.top = "0px";
+  }, 500);
+}, [googleLoaded]);
+
+
   return (
+    <>
+
+    <style>
+        {`
+        .goog-te-banner-frame,
+.goog-te-menu-frame,
+.goog-te-menu2,
+.goog-te-gadget,
+.goog-te-balloon-frame,
+.goog-te-spinner-pos,
+.goog-te-banner,
+#goog-gt-tt,
+.skiptranslate {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+}
+body {
+  top: 0px !important;
+}
+
+      `}
+      </style>
+
+
     <div className="bg-light min-vh-100 min-vw-100 d-flex flex-column">
           <style>
         {`
@@ -234,10 +321,14 @@ Make questions suitable for ${difficulty} difficulty.`;
             opacity: 1 !important;
             cursor: default !important;
           }
+           
+
         `}
       </style>
 
-      
+      <div id="google_translate_container" style={{ display: "none" }} ></div>
+     
+
       <nav className="navbar navbar-light bg-white shadow-sm px-4 py-3 sticky-top">
         <div className="d-flex justify-content-between w-100 align-items-center">
           <div className="d-flex align-items-center">
@@ -246,19 +337,23 @@ Make questions suitable for ${difficulty} difficulty.`;
           </div>
 
           <div className="d-flex align-items-center gap-2">
-            <div className="btn-group" role="group" aria-label="difficulty">
-              {["Easy", "Medium", "Hard"].map((d) => (
-                <button
-                  key={d}
-                  className={`btn btn-sm ${difficulty === d ? "btn-primary" : "btn-outline-secondary"}`}
-                  onClick={() => setDifficulty(d)}
-                >
-                  {d}
-                </button>
-              ))}
-            </div>
+<div className="btn-group" role="group" aria-label="language">
+  {[
+    { label: " 🇬🇧 ", code: "en" },
+    { label: " 🇮🇳 ", code: "hi" }
+  ].map(({ label, code }) => (
+    <button
+      key={label}
+      className={`btn btn-sm ${language === label ? "btn-primary" : "btn-outline-secondary"}`}
+      onClick={() => changeLanguage(label, code)}
+    >
+      {label}
+    </button>
+  ))}
+</div>
+
             <button className="btn btn-outline-secondary btn-sm" onClick={exportPDF}>
-              📄 Export PDF
+              📄 EXPORT PDF
             </button>
           </div>
         </div>
@@ -305,10 +400,7 @@ Make questions suitable for ${difficulty} difficulty.`;
             </div>
           </div>
 
-          <div className="small text-muted mt-3">
-            Difficulty: <strong>{difficulty}</strong> — weighting:{" "}
-            <strong>{DIFFICULTY_WEIGHT[difficulty]}pt</strong> per correct
-          </div>
+          
           <div className="mt-2">
             <small className="text-muted">
               Primary explanation requested to be long (≈300+ words) and detailed.
@@ -412,9 +504,7 @@ Make questions suitable for ${difficulty} difficulty.`;
                         <div>
                           Weighted score: <strong>{scoreWeighted}</strong> points
                         </div>
-                        <div className="small text-muted">
-                          Difficulty weight per correct answer: {DIFFICULTY_WEIGHT[difficulty]}
-                        </div>
+                       
                       </div>
                     </div>
                   )}
@@ -477,6 +567,6 @@ Make questions suitable for ${difficulty} difficulty.`;
           Made with ❤️ by <strong>Varnit</strong>
         </small>
       </footer>
-    </div>
+    </div></>
   );
 }
