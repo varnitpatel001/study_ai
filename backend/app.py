@@ -252,13 +252,13 @@ def get_subtopics(req: TopicRequest):
 def generate_explanation(req: PromptRequest):
     """
     Request body: { "prompt": "topic - subtopic" }
-    Response: { "explanation": "large text ~300+ words" }
+    Response: { "explanation": "large text ~150+ words" }
     """
     prompt = (
         f"Provide a thorough, student-friendly explanation of: {req.prompt}\n\n"
         "Requirements:\n"
-        "- Aim for ~300+ words (detailed but clear).\n"
-        "- Use short paragraphs and subheadings where useful.\n"
+        "- Aim for ~150+ words (detailed ).\n"
+        "- Use short paragraphs and subheadings where useful don not use ** in it.\n"
         "- Include intuition, a short example, and practical tips.\n"
         "- Avoid heavy jargon; if you use a technical term, briefly define it.\n\n"
         "Return only the explanation text (no JSON wrapper required)."
