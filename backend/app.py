@@ -283,7 +283,7 @@ def generate_quiz(req: PromptRequest):
         "[{\"question\":\"...\",\"options\":[\"A\",\"B\",\"C\",\"D\"],\"answer\":\"A\",\"explanation\":\"...\"}, ...]"
     )
     system_msg = "You are an expert quiz generator. Output strictly valid JSON array of objects."
-    result = call_groq(prompt, system_msg=system_msg, max_tokens=1200, temperature=0.1)
+    result = call_groq(prompt, system_msg=system_msg, max_tokens=2000, temperature=0.1)
 
     parsed = extract_json_array(result)
     if parsed is None:
