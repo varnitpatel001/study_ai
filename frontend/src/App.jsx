@@ -403,7 +403,7 @@ body {
           
           <div className="mt-2">
             <small className="text-muted">
-              Primary explanation 150+ words) and detailed.
+              Primary explanation (150+ words) clear and concise.
             </small>
           </div>
         </div>
