@@ -225,7 +225,7 @@ def get_subtopics(req: TopicRequest):
         "Respond only as a JSON array of strings, for example: [\"A\",\"B\",...]."
     )
     system_msg = "You are an academic assistant. Output strictly valid in JSON array only."
-    result = call_groq(prompt, system_msg=system_msg, max_tokens=300, temperature=0.0)
+    result = call_groq(prompt, system_msg=system_msg, max_tokens=100, temperature=0.0)
     arr = extract_json_array(result)
    
     if isinstance(arr, list):
@@ -264,7 +264,7 @@ def generate_explanation(req: PromptRequest):
         "Return only the explanation text (no JSON wrapper required)."
     )
     system_msg = "You are a patient teaching assistant that writes long helpful explanations."
-    explanation = call_groq(prompt, system_msg=system_msg, max_tokens=1400, temperature=0.0)
+    explanation = call_groq(prompt, system_msg=system_msg, max_tokens=500, temperature=0.0)
   
     explanation = re.sub(r"^```(?:\w*)\s*|```$", "", explanation).strip()
     return {"explanation": explanation}
@@ -284,7 +284,7 @@ def generate_quiz(req: PromptRequest):
         "[{\"question\":\"...\",\"options\":[\"A\",\"B\",\"C\",\"D\"],\"answer\":\"A\",\"explanation\":\"...\"}, ...]"
     )
     system_msg = "You are an expert quiz generator. Output strictly valid JSON array of objects."
-    result = call_groq(prompt, system_msg=system_msg, max_tokens=2000, temperature=0.1)
+    result = call_groq(prompt, system_msg=system_msg, max_tokens=1200, temperature=0.1)
 
     parsed = extract_json_array(result)
     if parsed is None:
