@@ -257,7 +257,7 @@ def generate_explanation(req: PromptRequest):
     prompt = (
         f"Provide a thorough, student-friendly explanation of: {req.prompt}\n\n"
         "Requirements:\n"
-        "- Aim for ~150+ words (detailed ).\n"
+        "- Aim for ~100+ words (detailed ).\n"
         "- Use short paragraphs and subheadings where useful don not use ** in it.\n"
         "- Include intuition, a short example, and practical tips.\n"
         "- Avoid heavy jargon; if you use a technical term, briefly define it.\n\n"
