@@ -58,7 +58,7 @@ export default function App() {
     const seedPrompt = chosenSub && chosenSub !== "None" ? `${topic} - ${chosenSub}` : topic;
 
     try {
-      const explanationPrompt = `Explain "${seedPrompt}" thoroughly. Provide a clear, structured explanation with examples, intuition, and practical notes. Make the explanation detailed (aim for 300+ words). Use simple language and subheadings where appropriate.`;
+      const explanationPrompt = `Explain "${seedPrompt}" thoroughly.  intuition, and practical notes. Make the explanation detailed (aim for 100+ words).`;
 
       const quizPrompt = `Create ${QUESTION_COUNT} multiple-choice questions about "${seedPrompt}". 
 
@@ -403,7 +403,7 @@ body {
           
           <div className="mt-2">
             <small className="text-muted">
-              Primary explanation requested to be long (≈300+ words) and detailed.
+              Primary explanation 150+ words) and detailed.
             </small>
           </div>
         </div>
