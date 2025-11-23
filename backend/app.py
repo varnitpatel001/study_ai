@@ -258,7 +258,7 @@ def generate_explanation(req: PromptRequest):
         f"Provide a thorough, student-friendly explanation of: {req.prompt}\n\n"
         "Requirements:\n"
         "- Aim for ~100 to ~150 words (concise ).\n"
-        "- Use short paragraphs and subheadings where useful don not use ** in it, make them bold.\n"
+        "- Use short paragraphs and subheadings where useful don not use ** in it.\n"
         "- Avoid heavy jargon; if you use a technical term, briefly define it.\n\n"
         "Return only the explanation text (no JSON wrapper required)."
     )
