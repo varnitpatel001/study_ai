@@ -225,7 +225,7 @@ def get_subtopics(req: TopicRequest):
         "Respond only as a JSON array of strings, for example: [\"A\",\"B\",...]."
     )
     system_msg = "You are an academic assistant. Output strictly valid in JSON array only."
-    result = call_groq(prompt, system_msg=system_msg, max_tokens=200, temperature=0.0)
+    result = call_groq(prompt, system_msg=system_msg, max_tokens=400, temperature=0.0)
     arr = extract_json_array(result)
    
     if isinstance(arr, list):
