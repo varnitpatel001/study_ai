@@ -65,18 +65,24 @@ export default function App() {
 
 Make questions suitable for ${difficulty} difficulty.`;
 
-      const [expRes, quizRes] = await Promise.all([
-        fetch("https://study-ai-0akh.onrender.com/generate_explanation", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: explanationPrompt }),
-        }),
-        fetch("https://study-ai-0akh.onrender.com/generate_quiz", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: quizPrompt }),
-        }),
-      ]);
+      // 10-second delay function
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+await delay(10000);  // ⏳ wait 10 seconds
+
+const [expRes, quizRes] = await Promise.all([
+  fetch("https://study-ai-0akh.onrender.com/generate_explanation", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt: explanationPrompt }),
+  }),
+  fetch("https://study-ai-0akh.onrender.com/generate_quiz", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt: quizPrompt }),
+  }),
+]);
+
 
       const expJson = await expRes.json();
       const quizJson = await quizRes.json();
