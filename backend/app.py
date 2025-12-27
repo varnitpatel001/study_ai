@@ -225,7 +225,7 @@ def get_subtopics(req: TopicRequest):
         "Respond only as a JSON array of strings, for example: [\"A\",\"B\",...]."
     )
     system_msg = "You are an academic assistant. Output strictly valid in JSON array only."
-    result = call_groq(prompt, system_msg=system_msg, max_tokens=400, temperature=0.0)
+    result = call_groq(prompt, system_msg=system_msg, max_tokens=400, temperature=0.2)
     arr = extract_json_array(result)
    
     if isinstance(arr, list):
@@ -257,13 +257,13 @@ def generate_explanation(req: PromptRequest):
     prompt = (
         f"Provide a thorough, student-friendly explanation of: {req.prompt}\n\n"
         "Requirements:\n"
-        "- Aim for ~100 to ~150 words (concise ).\n"
+        "- Aim for ~100 to ~200 words (concise ).\n"
         "- Use short paragraphs and subheadings where useful don not use ** in it.\n"
         "- Avoid heavy jargon; if you use a technical term, briefly define it.\n\n"
         "Return only the explanation text (no JSON wrapper required)."
     )
     system_msg = "You are a patient teaching assistant that writes long helpful explanations."
-    explanation = call_groq(prompt, system_msg=system_msg, max_tokens=700, temperature=0.0)
+    explanation = call_groq(prompt, system_msg=system_msg, max_tokens=1000, temperature=0.0)
   
     explanation = re.sub(r"^```(?:\w*)\s*|```$", "", explanation).strip()
     return {"explanation": explanation}
