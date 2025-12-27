@@ -68,7 +68,7 @@ Make questions suitable for ${difficulty} difficulty.`;
       // 10-second delay function
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-await delay(5000);  // ⏳ wait 10 seconds
+await delay(3000);  // ⏳ wait 10 seconds
 
 const [expRes, quizRes] = await Promise.all([
   fetch("https://study-ai-0akh.onrender.com/generate_explanation", {
